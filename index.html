@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cambio vs KBC Mobile — Cost Calculator</title>
+  <link rel="stylesheet" href="/src/styles.css" />
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <span class="header-spacer" aria-hidden="true"></span>
+      <h1><span class="team team-cambio">Cambio</span><span class="vs-badge">vs</span><span class="team team-kbc">KBC Mobile</span></h1>
+      <div class="header-actions">
+        <button type="button" id="printBtn" class="icon-btn" aria-label="Save / Print results">🖨️</button>
+        <button type="button" id="themeToggle" class="icon-btn" aria-label="Switch to dark mode">🌙</button>
+      </div>
+    </header>
+
+    <div class="layout">
+    <div class="sidebar">
+    <section class="card">
+      <h2>Trip details</h2>
+
+      <div class="field">
+        <label>🚙&nbsp; Vehicle class</label>
+        <div class="chips" id="classChips">
+          <button type="button" class="chip active" data-class="S">S</button>
+          <button type="button" class="chip" data-class="M">M</button>
+          <button type="button" class="chip" data-class="L">L</button>
+          <button type="button" class="chip" data-class="XL">XL</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="hours">⏱️&nbsp; Duration <span class="val" id="hoursVal">48 h</span></label>
+        <div class="control-group">
+          <input type="range" class="range-slider" id="hoursRange" min="1" max="400" step="1" value="48" aria-label="Duration in hours (slider)">
+          <div class="stepper">
+            <button type="button" data-target="hours" data-step="-1" aria-label="Decrease duration">−</button>
+            <input type="number" id="hours" value="48" min="1" max="400">
+            <button type="button" data-target="hours" data-step="1" aria-label="Increase duration">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="nightHours">🌙&nbsp; Night hours (00:00–6am) <span class="val" id="nightHoursVal">0 h</span></label>
+        <div class="control-group">
+          <input type="range" class="range-slider" id="nightHoursRange" min="0" max="400" step="1" value="0" aria-label="Night hours (slider)">
+          <div class="stepper">
+            <button type="button" data-target="nightHours" data-step="-1" aria-label="Decrease night hours">−</button>
+            <input type="number" id="nightHours" value="0" min="0" max="400">
+            <button type="button" data-target="nightHours" data-step="1" aria-label="Increase night hours">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="km">📍&nbsp; Distance <span class="val" id="kmVal">300 km</span></label>
+        <div class="control-group">
+          <input type="range" class="range-slider" id="kmRange" min="0" max="3000" step="25" value="300" aria-label="Distance in km (slider)">
+          <div class="stepper">
+            <button type="button" data-target="km" data-step="-25" aria-label="Decrease distance">−</button>
+            <input type="number" id="km" value="300" min="0" max="3000">
+            <button type="button" data-target="km" data-step="25" aria-label="Increase distance">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="trips">🔁&nbsp; Trips per month <span class="val" id="tripsVal">1</span></label>
+        <div class="control-group">
+          <input type="range" class="range-slider" id="tripsRange" min="1" max="20" step="1" value="1" aria-label="Trips per month (slider)">
+          <div class="stepper">
+            <button type="button" data-target="trips" data-step="-1" aria-label="Decrease trips per month">−</button>
+            <input type="number" id="trips" value="1" min="1" max="20">
+            <button type="button" data-target="trips" data-step="1" aria-label="Increase trips per month">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="months">🗓️&nbsp; Time horizon <span class="val" id="monthsVal">3 months</span></label>
+        <div class="control-group">
+          <input type="range" class="range-slider" id="monthsRange" min="1" max="24" step="1" value="3" aria-label="Time horizon in months (slider)">
+          <div class="stepper">
+            <button type="button" data-target="months" data-step="-1" aria-label="Decrease time horizon">−</button>
+            <input type="number" id="months" value="3" min="1" max="24">
+            <button type="button" data-target="months" data-step="1" aria-label="Increase time horizon">+</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Options</h2>
+
+      <div class="field">
+        <div class="toggle-row">
+          <span class="option-info">
+            <span class="option-title"><b>🛡️&nbsp; Cambio Safety Pack</b><button type="button" class="info-btn" aria-expanded="false" aria-label="Cambio Safety Pack details"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="5.25" stroke="currentColor" stroke-width="1.2"/><path d="M6 5.5V8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="6" cy="3.6" r="0.75" fill="currentColor"/></svg></button></span>
+            <span class="option-note" hidden>Deductible €1000→€200 (€400 XL) · €4/mo + €25 one-time · same on Start/Bonus/Comfort</span>
+          </span>
+          <label class="switch">
+            <input type="checkbox" id="safetyPack">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="toggle-row">
+          <span class="option-info">
+            <span class="option-title"><b>👥&nbsp; Cambio Partner card</b><button type="button" class="info-btn" aria-expanded="false" aria-label="Cambio Partner card details"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="5.25" stroke="currentColor" stroke-width="1.2"/><path d="M6 5.5V8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="6" cy="3.6" r="0.75" fill="currentColor"/></svg></button></span>
+            <span class="option-note" hidden>Add a 2nd driver · €1/mo + €25 one-time</span>
+          </span>
+          <label class="switch">
+            <input type="checkbox" id="partnerCard">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="toggle-row">
+          <span class="option-info">
+            <span class="option-title"><b>🧾&nbsp; Cambio Digital invoice</b><button type="button" class="info-btn" aria-expanded="false" aria-label="Cambio Digital invoice details"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="5.25" stroke="currentColor" stroke-width="1.2"/><path d="M6 5.5V8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="6" cy="3.6" r="0.75" fill="currentColor"/></svg></button></span>
+            <span class="option-note" hidden>−€1/mo discount for e-invoicing</span>
+          </span>
+          <label class="switch">
+            <input type="checkbox" id="digitalInvoice">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:0;">
+        <div class="toggle-row">
+          <span class="option-info">
+            <span class="option-title"><b>🛟&nbsp; KBC deductible insurance</b><button type="button" class="info-btn" aria-expanded="false" aria-label="KBC deductible insurance details"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="5.25" stroke="currentColor" stroke-width="1.2"/><path d="M6 5.5V8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="6" cy="3.6" r="0.75" fill="currentColor"/></svg></button></span>
+            <span class="option-note" hidden>Deductible €1000→€200 · €5 per 24h started, per rental</span>
+          </span>
+          <label class="switch">
+            <input type="checkbox" id="kbcInsurance">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <div class="main-content">
+    <section class="totals-section card">
+      <div class="section-title-row">
+        <h2 class="section-heading" id="totalsHeading">📈 Total over 3 months</h2>
+        <div class="context-line" id="totalsContext"></div>
+      </div>
+      <div id="totalsResults"></div>
+      <div class="note" id="totalsNote"></div>
+    </section>
+
+    <section class="trip-section card">
+      <div class="section-title-row">
+        <h2 class="section-heading">🎫 Cost per trip</h2>
+        <div class="context-line" id="tripContext"></div>
+      </div>
+      <div id="tripResults"></div>
+    </section>
+
+    </div>
+    </div>
+
+    <footer>
+      <div class="card footer-card">
+        <button type="button" class="section-toggle" id="referenceToggle" aria-expanded="false">
+          <h2>Fixed costs &amp; deposit (reference)</h2>
+          <span class="chevron"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.5 3.5L5 7L8.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <div class="reference-content" id="referenceContent" style="display:none">
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr><th>Plan</th><th class="num">Monthly</th><th class="num">Activation</th><th class="num">Deposit</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><div class="plan-cell"><span class="dot" style="background:var(--start)"></span>Cambio Start</div></td><td class="num">€4</td><td class="num">€35</td><td class="num">€150–500</td></tr>
+                <tr><td><div class="plan-cell"><span class="dot" style="background:var(--bonus)"></span>Cambio Bonus</div></td><td class="num">€8</td><td class="num">€35</td><td class="num">€150–500</td></tr>
+                <tr><td><div class="plan-cell"><span class="dot" style="background:var(--comfort)"></span>Cambio Comfort</div></td><td class="num">€22</td><td class="num">€35</td><td class="num">€150–500</td></tr>
+                <tr><td><div class="plan-cell"><span class="dot" style="background:var(--kbc)"></span>KBC Mobile</div></td><td class="num">€0</td><td class="num">€20</td><td class="num">None</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="note">Deposit is refundable on cancellation and held per <strong>membership</strong>, not per plan tier — it doesn't change if you switch between Start/Bonus/Comfort. Never included in cost totals above since it isn't a real expense.</div>
+        </div>
+      </div>
+
+      <div class="card footer-card">
+        <button type="button" class="section-toggle" id="notesToggle" aria-expanded="false">
+          <h2>Notes &amp; assumptions</h2>
+          <span class="chevron"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.5 3.5L5 7L8.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <ul class="footnotes" id="notesContent" style="display:none">
+          <li>Options toggle affects the totals-over-time cards, not the per-trip cards — they're account-level costs (subscription add-ons, insurance), not trip-level ones.</li>
+          <li>KBC Mobile has no XL class and doesn't publish a separate night rate — its hourly rate is flat regardless of time of day.</li>
+          <li>Night rate (00:00–6am) is a modeled estimate: night hours are applied to whichever hours aren't already covered by a day/week flat rate. Actual cambio billing depends on your exact reservation clock times, so treat this as a close estimate, not an exact invoice match.</li>
+        </ul>
+      </div>
+
+      <div class="card footer-card">
+        <button type="button" class="section-toggle" id="sourcesToggle" aria-expanded="false">
+          <h2>Sources</h2>
+          <span class="chevron"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.5 3.5L5 7L8.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <p class="sources" id="sourcesContent" style="display:none">
+          <a href="https://www.cambio.be/en-bxl/how-much-does-it-cost" target="_blank" rel="noopener noreferrer">Cambio pricing</a> ·
+          <a href="https://www.kbc.be/retail/en/products/payments/self-banking/on-your-smartphone/mobile/cambio.html" target="_blank" rel="noopener noreferrer">KBC Mobile pricing</a>.
+          Rates are hardcoded from these pages — re-verify periodically, as prices can change.
+          * KBC notes kilometre rates may vary based on fuel prices — check
+          <a href="https://www.cambio.be/en-vla/node/950" target="_blank" rel="noopener noreferrer">cambio via KBC Mobile | cambio carsharing | Flanders</a>
+          for the most recent prices.
+        </p>
+      </div>
+    </footer>
+
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
