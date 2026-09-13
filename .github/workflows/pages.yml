@@ -1,0 +1,58 @@
+name: GitHub Pages
+
+# Builds the Vite production bundle (dist/) and deploys it to GitHub Pages.
+# The full test suite (unit tests + Playwright suite) runs against that same
+# build first, so a broken build never gets published.
+#
+# Pages source must be set to "GitHub Actions" (Settings -> Pages), not a
+# branch — there is no deploy branch (e.g. pages-src) to create or maintain.
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Test, build, and deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci --no-audit --no-fund
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run tests (also builds dist/ via vite build)
+        run: npm test
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload dist/ as Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
